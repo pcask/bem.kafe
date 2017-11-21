@@ -94,18 +94,6 @@ namespace KafeYonetim.Data
             }
         }
 
-        public static int CalisanSayisiniGetir()
-        {
-            using (var connection = CreateConnection())
-            {
-
-                SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Calisanlar", connection);
-
-                int calisanSayisi = Convert.ToInt32(cmd.ExecuteScalar());
-
-                return calisanSayisi;
-            }
-        }
 
         public static List<Calisan> CalisanListesiniGetir()
         {
@@ -396,5 +384,19 @@ namespace KafeYonetim.Data
                 return result;
             }
         }
+
+        public static int CalisanSayisiniGetir()
+        {
+            using (var connection = CreateConnection())
+            {
+
+                SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Calisanlar", connection);
+
+                int calisanSayisi = Convert.ToInt32(cmd.ExecuteScalar());
+
+                return calisanSayisi;
+            }
+        }
+
     }
 }
