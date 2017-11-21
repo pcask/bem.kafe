@@ -22,7 +22,7 @@ namespace KafeYonetim.Data
         {
             using (var connection = CreateConnection())
             {
-                var command = new SqlCommand("SELECT TOP 1 * FROM KAfe ", connection);
+                var command = new SqlCommand("SELECT TOP 1 * FROM Kafeler ", connection);
 
                 using (var result = command.ExecuteReader())
                 {
@@ -40,7 +40,7 @@ namespace KafeYonetim.Data
             using (var connection = CreateConnection())
             {
 
-                var command = new SqlCommand("SELECT TOP 1 Ad FROM KAfe ", connection);
+                var command = new SqlCommand("SELECT TOP 1 Ad FROM Kafeler ", connection);
                 var result = (string)command.ExecuteScalar();
 
                 Console.WriteLine($"Kafe Adı: {result}");
@@ -94,6 +94,19 @@ namespace KafeYonetim.Data
             }
         }
 
+        public static int CalisanSayisiniGetir()
+        {
+            using (var connection = CreateConnection())
+            {
+
+                SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Calisanlar", connection);
+
+                int calisanSayisi = Convert.ToInt32(cmd.ExecuteScalar());
+
+                return calisanSayisi;
+            }
+        }
+
         public static List<Calisan> CalisanListesiniGetir()
         {
             using (var connection = CreateConnection())
@@ -143,9 +156,9 @@ namespace KafeYonetim.Data
             {
                 var command = new SqlCommand("BulasikciEkle", connection);
 
-                command.Parameters.AddWithValue("@hijyenPuan", bulasikci.HijyenPuani);
-                command.Parameters.AddWithValue("@kafeId", bulasikci.Kafe.Id);
-                command.Parameters.AddWithValue("@isim", bulasikci.Isim);
+                command.Parameters.AddWithValue("@TemizlikPuani", bulasikci.HijyenPuani);
+                command.Parameters.AddWithValue("@kafeID", bulasikci.Kafe.Id);
+                command.Parameters.AddWithValue("@Ad", bulasikci.Isim);
 
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -196,7 +209,7 @@ namespace KafeYonetim.Data
                 while (reader.Read())
                 {
 
-                    var urun = new Urun((int)reader["Id"], reader["ad"].ToString()
+                    var urun = new Urun((int)reader["ID"], reader["Ad"].ToString()
                                         , (double)reader["Fiyat"]
                                         , (bool)reader["StoktaVarMi"]);
 
