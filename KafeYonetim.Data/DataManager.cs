@@ -81,13 +81,13 @@ namespace KafeYonetim.Data
             {
                 var command = new SqlCommand("SELECT COUNT(*) AS MasaSayisi, SUM(KisiSayisi) AS KisiSayisi FROM Masa", connection);
 
-                var reader =  command.ExecuteReader();
+                var reader = command.ExecuteReader();
 
                 reader.Read();
 
                 var tuple = new Tuple<int, int>((int)reader["MasaSayisi"], (int)reader["KisiSayisi"]);
 
-                return tuple; 
+                return tuple;
 
                 //return new Tuple<int, int>((int)reader["MasaSayisi"], (int)reader["KisiSayisi"]);               
                 //return new MasaKisiSayisi { MasaSayisi = (int)reader["MasaSayisi"], KisiSayisi=(int)reader["KisiSayisi"]};
@@ -108,7 +108,7 @@ namespace KafeYonetim.Data
 
         public static List<Garson> GarsonlariGetir()
         {
-            using (var connection  = CreateConnection())
+            using (var connection = CreateConnection())
             {
                 SqlCommand cmd = new SqlCommand("SELECT CLS.ID, Ad, IseGirisTarihi, Bahsis FROM Calisanlar CLS INNER JOIN Garsonlar GSL ON CLS.GorevTabloID = GSL.ID WHERE GorevID = 2", connection);
 
@@ -127,6 +127,27 @@ namespace KafeYonetim.Data
                 }
 
                 return garsonlar;
+            }
+        }
+
+        public static Tuple<int, int> ToplamGarsonSayisiVeBahsisGetir()
+        {
+            using (var connection = CreateConnection())
+            {
+                SqlCommand cmd = new SqlCommand("SELECT COUNT(*) AS ToplamGarsonSayisi, SUM(Bahsis) AS ToplamBahsis FROM Garsonlar", connection);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                int toplamGarsonSayisi = 0;
+                int toplamBahsis = 0;
+
+                while (reader.Read())
+                {
+                    toplamBahsis = Convert.ToInt32(reader["ToplamBahsis"]);
+                    toplamGarsonSayisi = Convert.ToInt32(reader["ToplamGarsonSayisi"]);
+                }
+
+                return new Tuple<int, int>(toplamGarsonSayisi, toplamBahsis);
             }
         }
 

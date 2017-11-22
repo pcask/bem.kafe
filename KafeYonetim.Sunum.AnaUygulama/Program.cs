@@ -48,6 +48,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
                 Console.WriteLine("10. Bulaşıkçı Ekle");
                 Console.WriteLine("11. Çalışanları Listele");
                 Console.WriteLine("12. Çalışan Sayısını Getir");
+                Console.WriteLine("13. Garsonları Listele");
                 Console.WriteLine();
                 Console.Write("Bir seçim yapınız (çıkmak için H harfine basınız): ");
                 var secim = Console.ReadLine();
@@ -66,6 +67,7 @@ namespace KafeYonetim.Sunum.AnaUygulama
                     case "10": BulasikciEkle(); break;
                     case "11": CalisanListesiniGetir(); break;
                     case "12": CalisanSayisiniGetir(); break;
+                    case "13": GarsonlariListele(); break;
                     case "h": return;
                     default:
                         break;
@@ -320,6 +322,12 @@ namespace KafeYonetim.Sunum.AnaUygulama
 
                 Console.WriteLine();
             }
+
+            Console.WriteLine("\n");
+
+            Tuple<int,int> gelenDegerler = DataManager.ToplamGarsonSayisiVeBahsisGetir();
+
+            Console.WriteLine($"Toplam Garson Sayısı: {gelenDegerler.Item1} ve Toplam Bahşiş: {gelenDegerler.Item2}");
 
             Console.ReadLine();
         }
