@@ -22,7 +22,7 @@ namespace KafeYonetim.Data
         {
             using (var connection = CreateConnection())
             {
-                var command = new SqlCommand("SELECT TOP 1 * FROM KAfe ", connection);
+                var command = new SqlCommand("SELECT TOP 1 * FROM Kafeler ", connection);
 
                 using (var result = command.ExecuteReader())
                 {
@@ -103,6 +103,30 @@ namespace KafeYonetim.Data
                 int result = Convert.ToInt32(command.ExecuteScalar());
 
                 return result;
+            }
+        }
+
+        public static List<Garson> GarsonlariGetir()
+        {
+            using (var connection  = CreateConnection())
+            {
+                SqlCommand cmd = new SqlCommand("SELECT CLS.ID, Ad, IseGirisTarihi, Bahsis FROM Calisanlar CLS INNER JOIN Garsonlar GSL ON CLS.GorevTabloID = GSL.ID WHERE GorevID = 2", connection);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                List<Garson> garsonlar = new List<Garson>();
+
+                while (reader.Read())
+                {
+                    Garson garson = new Garson(reader["Ad"].ToString(), (DateTime)reader["IseGirisTarihi"], AktifKafeyiGetir());
+
+                    garson.Bahsis = Convert.ToDouble(reader["Bahsis"]);
+                    garson.Id = (int)reader["ID"];
+
+                    garsonlar.Add(garson);
+                }
+
+                return garsonlar;
             }
         }
 
