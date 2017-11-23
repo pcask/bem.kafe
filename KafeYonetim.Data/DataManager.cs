@@ -213,7 +213,7 @@ namespace KafeYonetim.Data
             }
         }
 
-        public static List<Calisan> CalisanListesiniGetir(int sayfaNumarasi =1 , int sayfadakiKayitSayisi = 20)
+        public static List<Calisan> CalisanListesiniGetir(int sayfaNumarasi = 1 , int sayfadakiKayitSayisi = 20)
         {
             using (var connection = CreateConnection())
             {
@@ -229,8 +229,7 @@ namespace KafeYonetim.Data
 
                     while (reader.Read())
                     {
-                        var calisan = new Calisan(reader["Isim"].ToString(), (DateTime)reader["IseGirisTarihi"], DataManager.AktifKafeyiGetir());
-
+                        Calisan calisan = new Calisan(reader["Ad"].ToString(), (DateTime)reader["IseGirisTarihi"], DataManager.AktifKafeyiGetir());
                         calisan.Gorev.GorevAdi = reader["GorevAdi"].ToString();
 
                         list.Add(calisan);
