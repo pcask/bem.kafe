@@ -231,11 +231,38 @@ namespace KafeYonetim.Data
                     {
                         Calisan calisan = new Calisan(reader["Ad"].ToString(), (DateTime)reader["IseGirisTarihi"], DataManager.AktifKafeyiGetir());
                         calisan.Gorev.GorevAdi = reader["GorevAdi"].ToString();
+                        calisan.Id = (int)reader["Id"];
 
                         list.Add(calisan);
                     }
 
                     return list;
+                }
+            }
+        }
+
+        public static List<Calisan> FiltreliCalisanlariGetir(string arananPattern)
+        {
+            using (var connection = CreateConnection())
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Calisanlar CLS INNER JOIN CalisanGorevler CLSG ON CLS.GorevID = CLSG.ID WHERE Ad LIKE '%' + @arananPat + '%' ", connection);
+
+                cmd.Parameters.AddWithValue("@arananPat", arananPattern);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    List<Calisan> calisanlar = new List<Calisan>();
+
+                    while (reader.Read())
+                    {
+                        Calisan calisan = new Calisan(reader["Ad"].ToString(), (DateTime)reader["IseGirisTarihi"], DataManager.AktifKafeyiGetir());
+                        calisan.Gorev.GorevAdi = reader["GorevAdi"].ToString();
+                        calisan.Id = (int)reader["Id"];
+
+                        calisanlar.Add(calisan);
+                    }
+
+                    return calisanlar;
                 }
             }
         }
