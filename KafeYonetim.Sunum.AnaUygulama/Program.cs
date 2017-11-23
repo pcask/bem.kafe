@@ -28,8 +28,8 @@ namespace KafeYonetim.Sunum.AnaUygulama
                 Console.WriteLine("10. Bulaşıkçı Ekle");
                 Console.WriteLine("11. Çalışanları Listele");
                 Console.WriteLine("12. Çalışan Sayısını Getir");
-                Console.WriteLine("13. Garsonları Listele");
-                Console.WriteLine("14. Çalışanları Ara");
+                Console.WriteLine("13. Garson Listele");
+                Console.WriteLine("14. Çalışan Filtrele");
                 Console.WriteLine();
                 Console.Write("Bir seçim yapınız (çıkmak için H harfine basınız): ");
                 var secim = Console.ReadLine();
@@ -48,14 +48,28 @@ namespace KafeYonetim.Sunum.AnaUygulama
                     case "10": BulasikciEkle(); break;
                     case "11": CalisanListesiniGetir(); break;
                     case "12": CalisanSayisiniGetir(); break;
-                    case "13": GarsonlariListele(); break;
-                    case "14": CalisanlariAra(); break;
+                    case "13": GarsonListele(); break;
+                    case "14": CalisanFiltrele(); break;
                     case "h": return;
                     default:
                         break;
                 }
 
             } while (true);
+        }
+
+        private static void CalisanFiltrele()
+        {
+            Console.Clear();
+
+            Console.Write("Bir metin giriniz: ");
+            string metin = Console.ReadLine();
+
+            List<Calisan> calisanlar = DataManager.CalisanListesiniIsmeGoreFiltrele(metin);
+
+            CalisanListesiniEkranaYazdir(calisanlar);
+
+            Console.Read();
         }
 
         private static void GarsonListele()
@@ -183,16 +197,6 @@ namespace KafeYonetim.Sunum.AnaUygulama
             {
                 Console.WriteLine($"{calisan.Id.ToString().PadRight(5)}{calisan.Isim.PadRight(30)}{calisan.IseGirisTarihi.ToString("yyyy.MMMM.dddd").PadRight(20)}{calisan.Gorev.GorevAdi}");
             }
-        }
-
-        private static void CalisanlariAra()
-        {
-            Console.Write("\nLütfen Aramak İstediğiniz Çalışan İsim Bilgisini Giriniz: ");
-            string arananPattern = Console.ReadLine();
-
-            CalisanListesiniEkranaYazdir(DataManager.FiltreliCalisanlariGetir(arananPattern));
-
-            Console.ReadLine();
         }
 
         private static void AsciEkle()
@@ -347,40 +351,6 @@ namespace KafeYonetim.Sunum.AnaUygulama
             int id = DataManager.MasaEkle(yeniMasa);
 
             Console.WriteLine($"{id} ID'li masa eklendi");
-
-            Console.ReadLine();
-        }
-
-        public static void GarsonlariListele()
-        {
-            Console.Clear();
-
-            List<Garson> garsonlar = DataManager.GarsonlariGetir();
-
-            Console.WriteLine("Garsonlar\n".PadLeft(30));
-
-            Console.Write("ID");
-            Console.Write("Ad".PadLeft(13));
-            Console.Write("İşe Giriş Tarihi".PadLeft(20));
-            Console.Write("Bahşiş".PadLeft(10));
-
-            Console.WriteLine("\n");
-
-            foreach (var garson in garsonlar)
-            {
-                Console.Write($"{garson.Id}");
-                Console.Write($"{garson.Isim}".PadLeft(15));
-                Console.Write($"{garson.IseGirisTarihi.ToString("dd-MM-yyyy")}".PadLeft(20));
-                Console.Write($"{garson.Bahsis}".PadLeft(10));
-
-                Console.WriteLine();
-            }
-
-            Console.WriteLine("\n");
-
-            Tuple<int,int> gelenDegerler = DataManager.ToplamGarsonSayisiVeBahsisGetir();
-
-            Console.WriteLine($"Toplam Garson Sayısı: {gelenDegerler.Item1} ve Toplam Bahşiş: {gelenDegerler.Item2}");
 
             Console.ReadLine();
         }
